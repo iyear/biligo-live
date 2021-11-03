@@ -30,6 +30,17 @@
 ### 参考
 
 ## 快速开始
+### 安装
+
+```shell
+go get -u github.com/iyear/biligo-live
+```
+
+```go
+import "github.com/iyear/biligo-live"
+```
+
+### 使用
 <details>
 <summary>查看代码</summary>
 
