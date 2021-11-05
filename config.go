@@ -34,7 +34,7 @@ const (
 
 // cmd
 const (
-	cmdAttention                 = "ATTENTION"                     // 用户关注【答谢关注】
+	cmdAttention                 = "ATTENTION"                     // 用户关注
 	cmdShare                     = "SHARE"                         // 用户分享直播间
 	cmdSpecialAttention          = "SPECIAL_ATTENTION"             // 特别关注直播间
 	cmdSysMsg                    = "SYS_MSG"                       //
@@ -62,9 +62,9 @@ const (
 	cmdRound                     = "ROUND"                         //
 	cmdDanmaku                   = "DANMU_MSG"                     // 弹幕消息
 	cmdWelcomeGuard              = "WELCOME_GUARD"                 //
-	cmdEntryEffect               = "ENTRY_EFFECT"                  // 舰长、高能榜、老爷进入【欢迎舰长】
+	cmdEntryEffect               = "ENTRY_EFFECT"                  // 舰长、高能榜、老爷进入
 	cmdWelcome                   = "WELCOME"                       // 欢迎进入房间(似乎已废弃)
-	cmdSuperChatMessageJPN       = "SUPER_CHAT_MESSAGE_JPN"        // 醒目留言日文翻译
+	cmdSuperChatMessageJPN       = "SUPER_CHAT_MESSAGE_JPN"        // 醒目留言日文翻译?
 	cmdSuperChatMessage          = "SUPER_CHAT_MESSAGE"            // 醒目留言
 	cmdSuperChatMessageDelete    = "SUPER_CHAT_MESSAGE_DELETE"     // 删除醒目留言 (似乎有时候并不会发,同时结束时间在 CmdSuperChatMessage 可以获取)
 	cmdLiveInteractiveGame       = "LIVE_INTERACTIVE_GAME"         //

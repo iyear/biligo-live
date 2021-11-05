@@ -67,6 +67,7 @@ func (m *MsgHeartbeatReply) GetHot() int {
 
 //
 
+// MsgDanmaku 弹幕消息
 type MsgDanmaku struct {
 	base
 }
@@ -154,6 +155,7 @@ func (m *MsgDanmaku) Parse() (*Danmaku, error) {
 
 //
 
+// MsgSendGift 投喂礼物
 type MsgSendGift struct {
 	base
 }
@@ -333,6 +335,7 @@ func (m *MsgSendGift) Parse() (*SendGift, error) {
 
 //
 
+// MsgComboSend 连击礼物
 type MsgComboSend struct {
 	base
 }
@@ -346,6 +349,7 @@ func (m *MsgComboSend) Raw() []byte {
 
 //
 
+// MsgFansUpdate 粉丝数量改变
 type MsgFansUpdate struct {
 	base
 }
@@ -380,6 +384,7 @@ func (m *MsgFansUpdate) Parse() (*FansUpdate, error) {
 
 //
 
+// MsgOnlineRankCount 高能榜数量更新
 type MsgOnlineRankCount struct {
 	base
 }
@@ -402,6 +407,7 @@ func (m *MsgOnlineRankCount) GetCount() int {
 
 //
 
+// MsgSuperChatMessage 醒目留言
 type MsgSuperChatMessage struct {
 	base
 }
@@ -546,6 +552,7 @@ func (m *MsgSuperChatMessage) Parse() (*SuperChatMessage, error) {
 
 //
 
+// MsgHotRankSettlement 荣登热门榜topX
 type MsgHotRankSettlement struct {
 	base
 }
@@ -594,6 +601,7 @@ func (m *MsgHotRankSettlement) Parse() (*HotRankSettlement, error) {
 
 //
 
+// MsgOnlineRankTop3 高能榜TOP3改变
 type MsgOnlineRankTop3 struct {
 	base
 }
@@ -634,6 +642,7 @@ func (m *MsgOnlineRankTop3) Parse() (*OnlineRankTop3, error) {
 
 //
 
+// MsgRoomBlockMsg 用户被禁言
 type MsgRoomBlockMsg struct {
 	base
 }
@@ -670,6 +679,7 @@ func (m *MsgRoomBlockMsg) Parse() (*RoomBlockMsg, error) {
 
 //
 
+// MsgStopLiveRoomList 刚刚停止了直播的直播间
 type MsgStopLiveRoomList struct {
 	base
 }
@@ -694,6 +704,7 @@ func (m *MsgStopLiveRoomList) GetList() ([]int64, error) {
 
 //
 
+// MsgOnlineRankV2 高能榜数据
 type MsgOnlineRankV2 struct {
 	base
 }
@@ -790,6 +801,7 @@ func (m *MsgOnlineRankV2) Parse() (*OnlineRankV2, error) {
 
 //
 
+// MsgNoticeMsg 广播消息(别的直播间投递高价礼物对所有直播间发起的广播)
 type MsgNoticeMsg struct {
 	base
 }
@@ -901,6 +913,7 @@ func (m *MsgNoticeMsg) Parse() (*NoticeMsg, error) {
 
 //
 
+// MsgHotRankChanged 热门榜改变
 type MsgHotRankChanged struct {
 	base
 }
@@ -936,6 +949,7 @@ func (m *MsgHotRankChanged) Parse() (*HotRankChanged, error) {
 
 //
 
+// MsgGuardBuy 用户上舰长
 type MsgGuardBuy struct {
 	base
 }
@@ -982,6 +996,7 @@ func (m *MsgGuardBuy) Parse() (*GuardBuy, error) {
 
 //
 
+// MsgSuperChatMessageJPN 醒目留言日文翻译?
 type MsgSuperChatMessageJPN struct {
 	base
 }
@@ -1100,6 +1115,7 @@ func (m *MsgSuperChatMessageJPN) Parse() (*SuperChatMessageJPN, error) {
 
 //
 
+// MsgUserToastMsg 上船附带的通知
 type MsgUserToastMsg struct {
 	base
 }
@@ -1166,6 +1182,7 @@ func (m *MsgUserToastMsg) Parse() (*UserToastMsg, error) {
 
 //
 
+// MsgSuperChatMessageDelete 删除醒目留言 (似乎有时候并不会发,同时结束时间在 CmdSuperChatMessage 可以获取)
 type MsgSuperChatMessageDelete struct {
 	base
 }
@@ -1190,6 +1207,7 @@ func (m *MsgSuperChatMessageDelete) GetList() ([]int64, error) {
 
 //
 
+// MsgAnchorLotStart 天选之人开始完整信息
 type MsgAnchorLotStart struct {
 	base
 }
@@ -1274,6 +1292,7 @@ func (m *MsgAnchorLotStart) Parse() (*AnchorLotStart, error) {
 
 //
 
+// MsgAnchorLotCheckStatus 天选时刻前的审核
 type MsgAnchorLotCheckStatus struct {
 	base
 }
@@ -1310,6 +1329,7 @@ func (m *MsgAnchorLotCheckStatus) Parse() (*AnchorLotCheckStatus, error) {
 
 //
 
+// MsgAnchorLotAward 天选结果推送
 type MsgAnchorLotAward struct {
 	base
 }
@@ -1366,6 +1386,7 @@ func (m *MsgAnchorLotAward) Parse() (*AnchorLotAward, error) {
 	return r, nil
 }
 
+// MsgAnchorLotEnd 天选之人获奖id
 type MsgAnchorLotEnd struct {
 	base
 }
@@ -1388,6 +1409,7 @@ func (m *MsgAnchorLotEnd) GetID() int64 {
 
 //
 
+// MsgRoomChange 房间信息改变
 type MsgRoomChange struct {
 	base
 }
@@ -1430,6 +1452,7 @@ func (m *MsgRoomChange) Parse() (*RoomChange, error) {
 
 //
 
+// MsgVoiceJoinList 连麦申请、取消连麦申请
 type MsgVoiceJoinList struct {
 	base
 }
@@ -1468,6 +1491,7 @@ func (m *MsgVoiceJoinList) Parse() (*VoiceJoinList, error) {
 
 //
 
+// MsgVoiceJoinRoomCountInfo 申请连麦队列变化
 type MsgVoiceJoinRoomCountInfo struct {
 	base
 }
@@ -1508,6 +1532,7 @@ func (m *MsgVoiceJoinRoomCountInfo) Parse() (*VoiceJoinRoomCountInfo, error) {
 
 //
 
+// MsgAttention 用户关注
 type MsgAttention struct {
 	base
 }
@@ -1521,6 +1546,7 @@ func (m *MsgAttention) Raw() []byte {
 
 //
 
+// MsgShare 用户分享直播间
 type MsgShare struct {
 	base
 }
@@ -1534,6 +1560,7 @@ func (m *MsgShare) Raw() []byte {
 
 //
 
+// MsgSpecialAttention 特别关注直播间
 type MsgSpecialAttention struct {
 	base
 }
@@ -1560,6 +1587,7 @@ func (m *MsgSysMsg) Raw() []byte {
 
 //
 
+// MsgPreparing 下播
 type MsgPreparing struct {
 	base
 }
@@ -1573,6 +1601,7 @@ func (m *MsgPreparing) Raw() []byte {
 
 //
 
+// MsgLive 开播
 type MsgLive struct {
 	base
 }
@@ -1586,6 +1615,7 @@ func (m *MsgLive) Raw() []byte {
 
 //
 
+// MsgRoomRank 排名改变
 type MsgRoomRank struct {
 	base
 }
@@ -1638,6 +1668,7 @@ func (m *MsgPkPre) Raw() []byte {
 
 //
 
+// MsgPkEnd PK判断胜负
 type MsgPkEnd struct {
 	base
 }
@@ -1677,6 +1708,7 @@ func (m *MsgSysGift) Raw() []byte {
 
 //
 
+// MsgHotRank 热门榜xx榜topX
 type MsgHotRank struct {
 	base
 }
@@ -1729,6 +1761,7 @@ func (m *MsgPlayTag) Raw() []byte {
 
 //
 
+// MsgGuardMsg 舰长消息
 type MsgGuardMsg struct {
 	base
 }
@@ -1807,6 +1840,7 @@ func (m *MsgWelcomeGuard) Raw() []byte {
 
 //
 
+// MsgEntryEffect 舰长、高能榜、老爷进入
 type MsgEntryEffect struct {
 	base
 }
@@ -1820,6 +1854,7 @@ func (m *MsgEntryEffect) Raw() []byte {
 
 //
 
+// MsgWelcome 欢迎进入房间(似乎已废弃)
 type MsgWelcome struct {
 	base
 }
@@ -1846,6 +1881,7 @@ func (m *MsgLiveInteractiveGame) Raw() []byte {
 
 //
 
+// MsgVoiceJoinStatus 开始连麦、结束连麦
 type MsgVoiceJoinStatus struct {
 	base
 }
@@ -1859,6 +1895,7 @@ func (m *MsgVoiceJoinStatus) Raw() []byte {
 
 //
 
+// MsgCutOff 被超管切断
 type MsgCutOff struct {
 	base
 }
@@ -1872,6 +1909,7 @@ func (m *MsgCutOff) Raw() []byte {
 
 //
 
+// MsgSpecialGift 节奏风暴
 type MsgSpecialGift struct {
 	base
 }
@@ -1885,6 +1923,7 @@ func (m *MsgSpecialGift) Raw() []byte {
 
 //
 
+// MsgNewGuardCount 船员数量改变事件
 type MsgNewGuardCount struct {
 	base
 }
@@ -1898,6 +1937,7 @@ func (m *MsgNewGuardCount) Raw() []byte {
 
 //
 
+// MsgRoomAdmins 房管数量改变
 type MsgRoomAdmins struct {
 	base
 }
@@ -1924,6 +1964,7 @@ func (m *MsgActivityBannerUpdateV2) Raw() []byte {
 
 //
 
+// MsgInteractWord 用户进入直播间
 type MsgInteractWord struct {
 	base
 }
@@ -1937,6 +1978,7 @@ func (m *MsgInteractWord) Raw() []byte {
 
 //
 
+// MsgPkBattlePre 大乱斗准备，10秒后开始
 type MsgPkBattlePre struct {
 	base
 }
@@ -1963,6 +2005,7 @@ func (m *MsgPkBattleSettle) Raw() []byte {
 
 //
 
+// MsgPkBattleStart 大乱斗开始
 type MsgPkBattleStart struct {
 	base
 }
@@ -1976,6 +2019,7 @@ func (m *MsgPkBattleStart) Raw() []byte {
 
 //
 
+// MsgPkBattleProcess 大乱斗双方送礼
 type MsgPkBattleProcess struct {
 	base
 }
@@ -1989,6 +2033,7 @@ func (m *MsgPkBattleProcess) Raw() []byte {
 
 //
 
+// MsgPkEnding 大乱斗尾声，最后几秒
 type MsgPkEnding struct {
 	base
 }
@@ -2002,6 +2047,7 @@ func (m *MsgPkEnding) Raw() []byte {
 
 //
 
+// MsgPkBattleEnd 大乱斗结束
 type MsgPkBattleEnd struct {
 	base
 }
@@ -2041,6 +2087,7 @@ func (m *MsgPkBattleSettleV2) Raw() []byte {
 
 //
 
+// MsgPkLotteryStart 大乱斗胜利后的抽奖
 type MsgPkLotteryStart struct {
 	base
 }
@@ -2054,6 +2101,7 @@ func (m *MsgPkLotteryStart) Raw() []byte {
 
 //
 
+// MsgPkBestUname PK最佳助攻
 type MsgPkBestUname struct {
 	base
 }
@@ -2067,6 +2115,7 @@ func (m *MsgPkBestUname) Raw() []byte {
 
 //
 
+// MsgCallOnOpposite 本直播间的观众跑去对面串门
 type MsgCallOnOpposite struct {
 	base
 }
@@ -2080,6 +2129,7 @@ func (m *MsgCallOnOpposite) Raw() []byte {
 
 //
 
+// MsgAttentionOpposite 本直播间观众关注了对面主播
 type MsgAttentionOpposite struct {
 	base
 }
@@ -2093,6 +2143,7 @@ func (m *MsgAttentionOpposite) Raw() []byte {
 
 //
 
+// MsgShareOpposite 本直播间观众分享了对面直播间
 type MsgShareOpposite struct {
 	base
 }
@@ -2106,6 +2157,7 @@ func (m *MsgShareOpposite) Raw() []byte {
 
 //
 
+// MsgAttentionOnOpposite 对面观众关注了本直播间
 type MsgAttentionOnOpposite struct {
 	base
 }
@@ -2119,6 +2171,7 @@ func (m *MsgAttentionOnOpposite) Raw() []byte {
 
 //
 
+// MsgPkMatchInfo 获取对面直播间信息
 type MsgPkMatchInfo struct {
 	base
 }
@@ -2132,6 +2185,7 @@ func (m *MsgPkMatchInfo) Raw() []byte {
 
 //
 
+// MsgPkMatchOnlineGuard 获取对面直播间舰长在线人数
 type MsgPkMatchOnlineGuard struct {
 	base
 }
@@ -2145,6 +2199,7 @@ func (m *MsgPkMatchOnlineGuard) Raw() []byte {
 
 //
 
+// MsgPkWinningStreak 大乱斗连胜事件
 type MsgPkWinningStreak struct {
 	base
 }
@@ -2158,6 +2213,7 @@ func (m *MsgPkWinningStreak) Raw() []byte {
 
 //
 
+// MsgPkDanmuMsg 对面的弹幕消息
 type MsgPkDanmuMsg struct {
 	base
 }
@@ -2171,6 +2227,7 @@ func (m *MsgPkDanmuMsg) Raw() []byte {
 
 //
 
+// MsgPkSendGift 对面的礼物消息
 type MsgPkSendGift struct {
 	base
 }
@@ -2184,6 +2241,7 @@ func (m *MsgPkSendGift) Raw() []byte {
 
 //
 
+// MsgPkInteractWord 对面的用户进入
 type MsgPkInteractWord struct {
 	base
 }
@@ -2197,6 +2255,7 @@ func (m *MsgPkInteractWord) Raw() []byte {
 
 //
 
+// MsgPkAttention 对面新增关注
 type MsgPkAttention struct {
 	base
 }
@@ -2210,6 +2269,7 @@ func (m *MsgPkAttention) Raw() []byte {
 
 //
 
+// MsgPkShare 对面有人分享直播间
 type MsgPkShare struct {
 	base
 }
