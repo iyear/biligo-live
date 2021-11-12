@@ -80,26 +80,26 @@ func (m *MsgDanmaku) Raw() []byte {
 }
 
 type Danmaku struct {
-	SendMode     int
-	SendFontSize int
-	DamakuColor  int64
-	Time         int64
-	DMID         int64
-	MsgType      int
-	Bubble       string
-	Content      string
-	MID          int64
-	Uname        string
-	RoomAdmin    int
-	Vip          int
-	SVip         int
-	Rank         int
-	MobileVerify int
-	UnameColor   string
-	MedalName    string
-	UpName       string
-	MedalLevel   int
-	UserLevel    int
+	SendMode     int    `json:"send_mode"`
+	SendFontSize int    `json:"send_font_size"`
+	DamakuColor  int64  `json:"damaku_color"`
+	Time         int64  `json:"time"`
+	DMID         int64  `json:"dmid"`
+	MsgType      int    `json:"msg_type"`
+	Bubble       string `json:"bubble"`
+	Content      string `json:"content"`
+	MID          int64  `json:"mid"`
+	Uname        string `json:"uname"`
+	RoomAdmin    int    `json:"room_admin"`
+	Vip          int    `json:"vip"`
+	SVip         int    `json:"svip"`
+	Rank         int    `json:"rank"`
+	MobileVerify int    `json:"mobile_verify"`
+	UnameColor   string `json:"uname_color"`
+	MedalName    string `json:"medal_name"`
+	UpName       string `json:"up_name"`
+	MedalLevel   int    `json:"medal_level"`
+	UserLevel    int    `json:"user_level"`
 }
 
 func (m *MsgDanmaku) Parse() (*Danmaku, error) {
