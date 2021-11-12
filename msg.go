@@ -82,7 +82,7 @@ func (m *MsgDanmaku) Raw() []byte {
 type Danmaku struct {
 	SendMode     int    `json:"send_mode"`
 	SendFontSize int    `json:"send_font_size"`
-	DamakuColor  int64  `json:"damaku_color"`
+	DanmakuColor int64  `json:"danmaku_color"`
 	Time         int64  `json:"time"`
 	DMID         int64  `json:"dmid"`
 	MsgType      int    `json:"msg_type"`
@@ -114,7 +114,7 @@ func (m *MsgDanmaku) Parse() (*Danmaku, error) {
 		h := info.([]interface{})[0].([]interface{})
 		dm.SendMode = int(h[1].(float64))
 		dm.SendFontSize = int(h[2].(float64))
-		dm.DamakuColor = int64(h[3].(float64))
+		dm.DanmakuColor = int64(h[3].(float64))
 		dm.Time = int64(h[4].(float64))
 		dm.DMID = int64(h[5].(float64))
 		dm.MsgType = int(h[10].(float64))
