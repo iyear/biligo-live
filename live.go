@@ -97,6 +97,15 @@ func (l *Live) report() {
 	}
 }
 func (l *Live) heartbeat(ctx context.Context, t time.Duration) {
+	hb := func(live *Live) {
+		err := live.ws.WriteMessage(websocket.BinaryMessage, encode(0, wsOpHeartbeat, nil))
+		if err != nil {
+			live.push(ctx, nil, fmt.Errorf("failed to send hearbeat: %s", err))
+		}
+	}
+
+	// 开头先执行一次
+	hb(l)
 	ticker := time.NewTicker(t)
 	defer ticker.Stop()
 	for {
@@ -105,11 +114,7 @@ func (l *Live) heartbeat(ctx context.Context, t time.Duration) {
 			l.info("heartbeat stopped")
 			return
 		case <-ticker.C:
-			err := l.ws.WriteMessage(websocket.BinaryMessage, encode(0, wsOpHeartbeat, nil))
-			if err != nil {
-				l.push(ctx, nil, fmt.Errorf("failed to send hearbeat: %s", err))
-				continue
-			}
+			hb(l)
 		}
 	}
 }
