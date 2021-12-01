@@ -66,19 +66,29 @@ func (l *Live) Enter(ctx context.Context, room int64, key string, uid int64) err
 
 	hbCtx, hbCancel := context.WithCancel(ctx)
 	revCtx, revCancel := context.WithCancel(ctx)
-	go l.rev(revCtx)
+	ifError := make(chan error)
+	go l.revWithError(revCtx, ifError)
 	<-l.entered
 	go l.heartbeat(hbCtx, l.hb)
 
+	defer func() {
+		hbCancel()
+		revCancel()
+		err = l.ws.Close()
+	}()
+
+	select {
 	// 外部停止ws
-	<-ctx.Done()
-	l.info("websocket conn stopped")
-	hbCancel()
-	revCancel()
-	if err = l.ws.Close(); err != nil {
-		return err
+	case <-ctx.Done():
+		l.info("websocket conn stopped")
+		break
+	// 內部接收 Websocket 訊息錯誤
+	case err = <-ifError:
+		l.error("websocket conn stopped with an error: %s", err)
+		break
 	}
-	return nil
+
+	return err
 }
 func (l *Live) report() {
 	if r := recover(); r != nil {
@@ -118,17 +128,25 @@ func (l *Live) heartbeat(ctx context.Context, t time.Duration) {
 		}
 	}
 }
-func (l *Live) rev(ctx context.Context) {
+
+// revWithError 接收訊息並捕捉錯誤
+func (l *Live) revWithError(ctx context.Context, ifError chan<- error) {
 	msgCtx, msgCancel := context.WithCancel(ctx)
+	defer l.info("receiving stopped")
 	defer msgCancel()
+
 	for {
 		select {
 		case <-ctx.Done():
-			l.info("receiving stopped")
 			return
 		default:
 			if t, msg, err := l.ws.ReadMessage(); t == websocket.BinaryMessage && err == nil && len(msg) > 16 {
 				go l.handle(msgCtx, msg)
+			} else if err != nil {
+				go func() {
+					ifError <- err
+				}()
+				return
 			}
 		}
 	}

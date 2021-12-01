@@ -12,7 +12,7 @@ import (
 // 同 README.md 的快速开始
 
 func main() {
-	const room int64 = 48743
+	const room int64 = 573893
 
 	// 获取一个Live实例
 	// debug: debug模式，输出一些额外的信息
@@ -34,13 +34,16 @@ func main() {
 
 	ctx, stop := context.WithCancel(context.Background())
 
+	ifError := make(chan error)
 	go func() {
 		// 进入房间
 		// room: room id(真实ID，短号需自行转换)
 		// key: 用户标识，可留空
 		// uid: 用户UID，可随机生成
 		if err := l.Enter(ctx, room, "", 12345678); err != nil {
-			log.Fatal(err)
+			log.Println("Error Encountered: ", err)
+			log.Println("Room Disconnected")
+			ifError <- err
 			return
 		}
 	}()
@@ -48,15 +51,21 @@ func main() {
 	go rev(ctx, l)
 
 	// 15s的演示
-	after := time.NewTimer(15 * time.Second)
-	defer after.Stop()
-	<-after.C
-	fmt.Println("I want to stop")
-	// 关闭ws连接与相关协程
-	stop()
-	// 为了使安全退出效果可见，进行阻塞，真实场景中可以移除
-	select {}
+	after := time.After(15 * time.Second)
+	select {
+	case <-after:
+		fmt.Println("I want to stop")
+		// 关闭ws连接与相关协程
+		stop()
+		break
+	case err := <-ifError:
+		fmt.Println("I don't want to stop, but I encountered an error: ", err)
+		break
+	}
+	// 五秒時間讓他關閉其他 goroutine
+	<-time.After(5 * time.Second)
 }
+
 func rev(ctx context.Context, l *live.Live) {
 	for {
 		select {
