@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/binary"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gorilla/websocket"
 	"log"
@@ -66,19 +67,29 @@ func (l *Live) Enter(ctx context.Context, room int64, key string, uid int64) err
 
 	hbCtx, hbCancel := context.WithCancel(ctx)
 	revCtx, revCancel := context.WithCancel(ctx)
-	go l.rev(revCtx)
+	ifError := make(chan error)
+	go l.revWithError(revCtx, ifError)
 	<-l.entered
 	go l.heartbeat(hbCtx, l.hb)
 
+	defer func() {
+		hbCancel()
+		revCancel()
+		err = l.ws.Close()
+	}()
+
+	select {
 	// 外部停止ws
-	<-ctx.Done()
-	l.info("websocket conn stopped")
-	hbCancel()
-	revCancel()
-	if err = l.ws.Close(); err != nil {
-		return err
+	case <-ctx.Done():
+		l.info("websocket conn stopped")
+		break
+	// 內部接收 Websocket 訊息錯誤
+	case err = <-ifError:
+		l.error("websocket conn stopped with an error: %s", err)
+		break
 	}
-	return nil
+
+	return err
 }
 func (l *Live) report() {
 	if r := recover(); r != nil {
@@ -118,6 +129,40 @@ func (l *Live) heartbeat(ctx context.Context, t time.Duration) {
 		}
 	}
 }
+
+// testReadMessage 測試讀取訊息時隨機發送錯誤
+func (l *Live) testReadMessage() (t int, msg []byte, err error) {
+	t, msg, err = l.ws.ReadMessage()
+	if time.Now().Second()%10 == 0 {
+		err = errors.New("my custom error test")
+	}
+	return
+}
+
+// revWithError 接收訊息並捕捉錯誤
+func (l *Live) revWithError(ctx context.Context, ifError chan<- error) {
+	msgCtx, msgCancel := context.WithCancel(ctx)
+	defer l.info("receiving stopped")
+	defer msgCancel()
+
+	for {
+		select {
+		case <-ctx.Done():
+			return
+		default:
+			if t, msg, err := l.ws.ReadMessage(); t == websocket.BinaryMessage && err == nil && len(msg) > 16 {
+				go l.handle(msgCtx, msg)
+			} else if err != nil {
+				go func() {
+					ifError <- err
+				}()
+				return
+			}
+		}
+	}
+}
+
+// rev 接收 WebSocket 訊息
 func (l *Live) rev(ctx context.Context) {
 	msgCtx, msgCancel := context.WithCancel(ctx)
 	defer msgCancel()
