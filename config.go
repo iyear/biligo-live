@@ -113,6 +113,7 @@ const (
 	cmdPkInteractWord            = "PK_INTERACT_WORD"              // 对面的用户进入
 	cmdPkAttention               = "PK_ATTENTION"                  // 对面新增关注
 	cmdPkShare                   = "PK_SHARE"                      // 对面有人分享直播间
+	cmdWatChedChange             = "WATCHED_CHANGE"                // 直播间看过人数变化
 )
 
 const (

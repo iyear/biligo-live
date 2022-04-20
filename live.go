@@ -5,10 +5,11 @@ import (
 	"encoding/binary"
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/websocket"
 	"log"
 	"os"
 	"time"
+
+	"github.com/gorilla/websocket"
 )
 
 type Live struct {
@@ -372,6 +373,8 @@ func (l *Live) switchCmd(cmd string, body []byte) Msg {
 		m = &MsgPkAttention{base: b}
 	case cmdPkShare:
 		m = &MsgPkShare{base: b}
+	case cmdWatChedChange:
+		m = &MsgWatChed{base: b}
 	default:
 		m = &MsgGeneral{base: b}
 	}
