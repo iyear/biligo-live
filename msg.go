@@ -2361,3 +2361,30 @@ func (m *MsgPkShare) Cmd() string {
 func (m *MsgPkShare) Raw() []byte {
 	return m.raw
 }
+
+type WatChed struct {
+	Num       int    `json:"num"`        //144450
+	TextLarge string `json:"text_large"` //14.4万人看过
+	TextSmall string `json:"text_small"` //14.4万
+}
+
+// MsgWatChed 直播间看过人数变化
+type MsgWatChed struct {
+	base
+}
+
+func (m *MsgWatChed) Cmd() string {
+	return cmdWatChedChange
+}
+func (m *MsgWatChed) Raw() []byte {
+	return m.raw
+}
+
+func (m *MsgWatChed) Parse() (*WatChed, error) {
+	var watChed WatChed
+	err := json.Unmarshal(getData(m.raw), &watChed)
+	if err != nil {
+		return nil, err
+	}
+	return &watChed, nil
+}
