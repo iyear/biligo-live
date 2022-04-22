@@ -61,7 +61,7 @@ func (l *Live) Enter(ctx context.Context, room int64, key string, uid int64) err
 	if err != nil {
 		return err
 	}
-	if err = l.ws.WriteMessage(websocket.BinaryMessage, encode(0, wsOpEnterRoom, body)); err != nil {
+	if err = l.ws.WriteMessage(websocket.BinaryMessage, encode(wsVerPlain, wsOpEnterRoom, body)); err != nil {
 		return err
 	}
 
