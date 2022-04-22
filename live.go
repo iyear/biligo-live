@@ -109,7 +109,7 @@ func (l *Live) report() {
 }
 func (l *Live) heartbeat(ctx context.Context, t time.Duration) {
 	hb := func(live *Live) {
-		err := live.ws.WriteMessage(websocket.BinaryMessage, encode(0, wsOpHeartbeat, nil))
+		err := live.ws.WriteMessage(websocket.BinaryMessage, encode(wsVerPlain, wsOpHeartbeat, nil))
 		if err != nil {
 			live.push(ctx, nil, fmt.Errorf("failed to send hearbeat: %s", err))
 		}
