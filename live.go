@@ -69,8 +69,15 @@ func (l *Live) Enter(ctx context.Context, room int64, key string, uid int64) err
 	revCtx, revCancel := context.WithCancel(ctx)
 	ifError := make(chan error)
 	go l.revWithError(revCtx, ifError)
-	<-l.entered
-	go l.heartbeat(hbCtx, l.hb)
+
+	go func() {
+		select {
+		case <-l.entered:
+		case <-hbCtx.Done():
+			return
+		}
+		l.heartbeat(hbCtx, l.hb)
+	}()
 
 	defer func() {
 		hbCancel()
