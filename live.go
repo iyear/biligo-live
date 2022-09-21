@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"time"
 
@@ -37,7 +38,12 @@ func NewLive(debug bool, heartbeat time.Duration, cache int, recover func(error)
 
 // Conn ws连接bilibili弹幕服务器
 func (l *Live) Conn(dialer *websocket.Dialer, host string) error {
-	w, _, err := dialer.Dial(host, nil)
+	return l.ConnWithHeader(dialer, host, nil)
+}
+
+// ConnWithHeader ws连接bilibili弹幕服务器 (带header)
+func (l *Live) ConnWithHeader(dialer *websocket.Dialer, host string, header http.Header) error {
+	w, _, err := dialer.Dial(host, header)
 	if err != nil {
 		return err
 	}
