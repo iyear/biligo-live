@@ -73,7 +73,7 @@ func (l *Live) Enter(ctx context.Context, room int64, key string, uid int64) err
 
 	hbCtx, hbCancel := context.WithCancel(ctx)
 	revCtx, revCancel := context.WithCancel(ctx)
-	ifError := make(chan error)
+	ifError := make(chan error, 1)
 	go l.revWithError(revCtx, ifError)
 
 	go func() {
@@ -148,6 +148,7 @@ func (l *Live) revWithError(ctx context.Context, ifError chan<- error) {
 	msgCtx, msgCancel := context.WithCancel(ctx)
 	defer l.info("receiving stopped")
 	defer msgCancel()
+	defer close(ifError)
 
 	for {
 		select {
@@ -157,9 +158,7 @@ func (l *Live) revWithError(ctx context.Context, ifError chan<- error) {
 			if t, msg, err := l.ws.ReadMessage(); t == websocket.BinaryMessage && err == nil && len(msg) > 16 {
 				go l.handle(msgCtx, msg)
 			} else if err != nil {
-				go func() {
-					ifError <- err
-				}()
+				ifError <- err
 				return
 			}
 		}
