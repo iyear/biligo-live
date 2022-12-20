@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"net/http"
 	"os"
 	"time"
 
@@ -37,7 +38,12 @@ func NewLive(debug bool, heartbeat time.Duration, cache int, recover func(error)
 
 // Conn ws连接bilibili弹幕服务器
 func (l *Live) Conn(dialer *websocket.Dialer, host string) error {
-	w, _, err := dialer.Dial(host, nil)
+	return l.ConnWithHeader(dialer, host, nil)
+}
+
+// ConnWithHeader ws连接bilibili弹幕服务器 (带header)
+func (l *Live) ConnWithHeader(dialer *websocket.Dialer, host string, header http.Header) error {
+	w, _, err := dialer.Dial(host, header)
 	if err != nil {
 		return err
 	}
@@ -67,7 +73,7 @@ func (l *Live) Enter(ctx context.Context, room int64, key string, uid int64) err
 
 	hbCtx, hbCancel := context.WithCancel(ctx)
 	revCtx, revCancel := context.WithCancel(ctx)
-	ifError := make(chan error)
+	ifError := make(chan error, 1)
 	go l.revWithError(revCtx, ifError)
 
 	go func() {
@@ -142,6 +148,7 @@ func (l *Live) revWithError(ctx context.Context, ifError chan<- error) {
 	msgCtx, msgCancel := context.WithCancel(ctx)
 	defer l.info("receiving stopped")
 	defer msgCancel()
+	defer close(ifError)
 
 	for {
 		select {
@@ -151,9 +158,7 @@ func (l *Live) revWithError(ctx context.Context, ifError chan<- error) {
 			if t, msg, err := l.ws.ReadMessage(); t == websocket.BinaryMessage && err == nil && len(msg) > 16 {
 				go l.handle(msgCtx, msg)
 			} else if err != nil {
-				go func() {
-					ifError <- err
-				}()
+				ifError <- err
 				return
 			}
 		}
